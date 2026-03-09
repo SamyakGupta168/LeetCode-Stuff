@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void topo(int V, vector<vector<int>>&adj, vector<int>&indegree, vector<int>&ans) {
+    void topo(int V, vector<vector<int>>&adj, vector<int>&indegree, int &cnt) {
         queue<int> q;
         for(int i=0;i<V;i++) {
             if(!indegree[i]) {
@@ -10,7 +10,7 @@ public:
         while(!q.empty()) {
             int node = q.front();
             q.pop();
-            ans.push_back(node);
+            cnt++;
             for(auto it : adj[node]) {
                 indegree[it]--;
                 if(!indegree[it]) q.push(it);
@@ -32,8 +32,8 @@ public:
             }
         }
 
-        vector<int> ans;
-        topo(V, adj, indegree, ans);
-        return (ans.size()==V);
+        int cnt = 0;
+        topo(V, adj, indegree, cnt);
+        return (cnt==V);
     }
 };
