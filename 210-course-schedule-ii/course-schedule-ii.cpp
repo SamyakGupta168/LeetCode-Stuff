@@ -3,7 +3,9 @@ public:
     void topo(int V, vector<vector<int>>&adj, vector<int>&indegree, vector<int>&ans) {
         queue<int> q;
         for(int i=0;i<V;i++) {
-            if(!indegree[i]) q.push(i);
+            if(!indegree[i]) {
+                q.push(i);
+            }
         }
         while(!q.empty()) {
             int node = q.front();
@@ -22,15 +24,17 @@ public:
         for(auto &v : prerequisites) {
             adj[v[1]].push_back(v[0]);
         }
-        vector<int> indegree(V);
+
+        vector<int> indegree(V, 0);
         for(auto &v : adj) {
             for(auto x : v) {
                 indegree[x]++;
             }
         }
+
         vector<int> ans;
         topo(V, adj, indegree, ans);
         if(ans.size()<V) return {};
-        return ans;
+        return ans; 
     }
 };
