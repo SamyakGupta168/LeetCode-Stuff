@@ -6,12 +6,13 @@ public:
     void dijkstra(auto src, vector<vector<int>>&grid, vector<vector<int>>&dist) {
         int n=grid.size(), m=grid[0].size();
         dist[src.first][src.second] = 1;
-        priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
+        // priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
+        queue<pair<int,pair<int,int>>> pq;
         pq.push({1, src});
         
         while(!pq.empty()) {
-            int dis = pq.top().first;
-            auto [x, y] = pq.top().second;
+            int dis = pq.front().first;
+            auto [x, y] = pq.front().second;
             pq.pop();
             
             for(int i=0;i<8;i++) {
