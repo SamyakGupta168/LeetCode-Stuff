@@ -3,7 +3,7 @@ public:
     int minCost(vector<int>& nums1, vector<int>& nums2) {
         int n = nums1.size();
         int ans = 0;
-        map<int,int> mp1, mp2;
+        unordered_map<int,int> mp1, mp2;
         for(auto x : nums1) {
             mp1[x] = 0, mp2[x] = 0;
         }
