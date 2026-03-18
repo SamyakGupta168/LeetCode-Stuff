@@ -20,8 +20,8 @@ public:
     }
 
     long long countCommas(long long n) {
-        string s = to_string(n);
-        ll msb = s.size()-1;
+        ll msb = Msb(n);
+        msb--;
         ll ans = (n - expo(msb) + 1)*(msb/3);
         msb--;
         while(msb>=3) {
