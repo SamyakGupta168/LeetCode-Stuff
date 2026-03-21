@@ -22,7 +22,7 @@ public:
             for(int i=0;i<4;i++) {
                 int nr = r + dy[i], nc = c + dx[i];
                 if(nr>=0 && nc>=0 && nr<n && nc<m) {
-                    if(!vis[nr][nc] && mat[nr][nc]==1) {
+                    if(!vis[nr][nc]) {
                         vis[nr][nc]=1;
                         q.push({{nr, nc}, d+1});
                     }
