@@ -38,8 +38,7 @@ public:
         for (ll x = 0; x <= k; x++) {
             if (x >= 0 && x <= p && k - x >= 0 && k - x <= q) {
                 ll temp = mod_mul(c1[x], c2[k - x]);
-                ans += mod_mul(temp, 2);
-                ans %= mod;
+                ans = (ans + mod_mul(temp, 2)) % mod;
             }
         }
 
