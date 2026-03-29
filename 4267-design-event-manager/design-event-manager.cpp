@@ -1,8 +1,8 @@
 class EventManager {
 public:
-    unordered_set<int> activeEvents;
+    set<int> activeEvents;
     map<int,set<int>> list;
-    unordered_map<int,int> priority;
+    map<int,int> priority;
     
     EventManager(vector<vector<int>>& events) {
         for(auto &v : events) {
