@@ -9,12 +9,13 @@ public:
 
         vector<vector<int>> dist(n, vector<int>(n, INT_MAX));
         dist[0][0] = 0;
-        priority_queue<pair<int, pair<int,int>>, vector<pair<int, pair<int,int>>>, greater<pair<int, pair<int,int>>>> pq;
+        // priority_queue<pair<int, pair<int,int>>, vector<pair<int, pair<int,int>>>, greater<pair<int, pair<int,int>>>> pq;
+        queue<pair<int, pair<int,int>>> pq;
         pq.push({0, {0, 0}});
         while(!pq.empty()) {
-            int dis = pq.top().first;
-            int r = pq.top().second.first;
-            int c = pq.top().second.second;
+            int dis = pq.front().first;
+            int r = pq.front().second.first;
+            int c = pq.front().second.second;
             pq.pop();
 
             for(int i=0;i<8;i++) {
