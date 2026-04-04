@@ -10,18 +10,18 @@ public:
         pq.push({0, {0, 0}});
 
         while(!pq.empty()) {
-            int dis = pq.top().first;
+            int diff = pq.top().first;
             int r = pq.top().second.first;
             int c = pq.top().second.second;
             pq.pop();
-            if(r==n-1 && c==m-1) return dis;
+            if(r==n-1 && c==m-1) return diff;
             
             for(int i=0;i<4;i++) {
                 int nr = r + dx[i], nc = c + dy[i];
                 if(nr>=0 && nc>=0 && nr<n && nc<m) {
-                    int diff = abs(heights[r][c] - heights[nr][nc]);
-                    if(max(dis, diff) < dist[nr][nc]) {
-                        dist[nr][nc] = max(dis, diff);
+                    int d = abs(heights[r][c] - heights[nr][nc]);
+                    if(max(diff, d) < dist[nr][nc]) {
+                        dist[nr][nc] = max(diff, d);
                         pq.push({dist[nr][nc], {nr, nc}});
                     }
                 }
