@@ -29,7 +29,7 @@ public:
         for(auto &q : queries) {
             int l = q[0], r = q[1];
             if(l<r) ans.push_back(f[r] - f[l]);
-            else ans.push_back(abs(b[l] - b[r]));
+            else ans.push_back(b[r] - b[l]);
         }
 
         return ans;
