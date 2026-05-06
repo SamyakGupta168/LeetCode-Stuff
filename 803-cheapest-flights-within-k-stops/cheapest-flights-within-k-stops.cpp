@@ -19,10 +19,8 @@ public:
             int node = pq.front().second;
             pq.pop();
 
-            if(node == dst) {
-                if(stops > k) continue;
-                else ans = min(ans, dis);
-            }
+            if(stops > k) continue;
+            // if(node == dst) ans = min(ans, dis);
 
             for(auto &it : adj[node]) {
                 int adjNode = it.first;
@@ -35,6 +33,6 @@ public:
             }
         }
 
-        return ((ans == INT_MAX) ? -1 : ans);
+        return ((dist[dst] == INT_MAX) ? -1 : dist[dst]);
     }
 };
