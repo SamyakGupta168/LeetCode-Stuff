@@ -7,15 +7,16 @@ public:
         }
 
         vector<int> dist(n, INT_MAX);
-        priority_queue<pair<pair<int,int>, int>, vector<pair<pair<int,int>, int>>, greater<pair<pair<int,int>, int>>> pq;
+        // priority_queue<pair<pair<int,int>, int>, vector<pair<pair<int,int>, int>>, greater<pair<pair<int,int>, int>>> pq;
         // Priority queue will store this {{stops, dist}, node}
+        queue<pair<pair<int,int>, int>> pq;
         dist[src] = 0;
         pq.push({{0, 0}, src});
         int ans = INT_MAX;
         while(!pq.empty()) {
-            int stops = pq.top().first.first;
-            int dis = pq.top().first.second;
-            int node = pq.top().second;
+            int stops = pq.front().first.first;
+            int dis = pq.front().first.second;
+            int node = pq.front().second;
             pq.pop();
 
             if(node == dst) {
