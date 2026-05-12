@@ -23,7 +23,7 @@ public:
         for(int i=0;i<n;i++) {
             int cities = 0;
             for(int j=0;j<n;j++) {
-                if(i != j && dist[i][j] != INF && dist[i][j] <= th) cities++;
+                if(i != j && dist[i][j] <= th) cities++;
             }
             if(cities <= cnt) {
                 city = i;
