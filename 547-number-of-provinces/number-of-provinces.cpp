@@ -52,7 +52,7 @@ public:
         for(int i=0;i<V;i++) {
             for(int j=0;j<V;j++) {
                 if(adj[i][j]) {
-                    ds.unionByRank(i, j);
+                    ds.unionBySize(i, j);
                 }
             }
         }
