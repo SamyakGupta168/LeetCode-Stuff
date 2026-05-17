@@ -50,7 +50,7 @@ public:
         int V = accounts.size();
         DisjointSet ds(V);
         
-        unordered_map<string,int> node;
+        map<string,int> node;
         int idx = 0;
         for(auto &v : accounts) {
             for(int i=1;i<v.size();i++) {
