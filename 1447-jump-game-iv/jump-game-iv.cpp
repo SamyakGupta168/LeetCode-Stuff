@@ -31,16 +31,12 @@ public:
 
             vector<int> used;
             for(auto idx : index[arr[pos]]) {
-                if(!vis[idx]) {
-                    vis[idx] = 1;
-                    q.push({idx, steps+1});
-                    used.push_back(idx);
-                }
+                vis[idx] = 1;
+                q.push({idx, steps+1});
+                used.push_back(idx);
             }
 
-            for(auto idx : used) {
-                index[arr[pos]].erase(idx);
-            }
+            index.erase(arr[pos]);
         }
 
         return -1;
