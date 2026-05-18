@@ -3,7 +3,7 @@ public:
     int minJumps(vector<int>& arr) {
         int n = arr.size();
         // cout<<n<<'\n';
-        map<int, set<int>> index;
+        unordered_map<int, set<int>> index;
         for(int i=0;i<n;i++) {
             index[arr[i]].insert(i);
         }
