@@ -13,7 +13,8 @@ public:
             int dis = pq.top().first;
             int node = pq.top().second;
             pq.pop();
-
+            if(dis > dist[node]) continue;
+            
             for (auto& it : adj[node]) {
                 int edw = (it.second > th);
                 int adjNode = it.first;
