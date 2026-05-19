@@ -26,8 +26,6 @@ public:
         if(n == 2) return max(nums[0], nums[1]);
 
         vector<int> dp1(n, -1), dp2(n, -1);
-        f1(n-2, dp1, nums);
-        f2(n-1, dp2, nums);
-        return max(dp1[n-2], dp2[n-1]);
+        return max(f1(n-2, dp1, nums), f2(n-1, dp2, nums));
     }
 };
