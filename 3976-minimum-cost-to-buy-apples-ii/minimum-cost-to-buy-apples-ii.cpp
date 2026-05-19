@@ -36,13 +36,19 @@ public:
             adj2[r[1]].push_back({r[0], (ll)r[2]*r[3]});
         }
 
+        vector<vector<ll>> dist1(n);
+        vector<vector<ll>> dist2(n);
+
+        for(int i=0;i<n;i++) {
+            dist1[i] = dijkstra(n, adj1, i);
+            dist2[i] = dijkstra(n, adj2, i);
+        }
+
         vector<int> ans(n);
         for(int i=0;i<n;i++) {
-            vector<ll> dist1 = dijkstra(n, adj1, i);
-            vector<ll> dist2 = dijkstra(n, adj2, i);
             ll mn = LLONG_MAX;
             for(int j=0;j<n;j++) {
-                mn = min(mn, dist1[j] + dist2[j] + prices[j]);
+                mn = min(mn, dist1[i][j] + dist2[j][i] + prices[j]);
             }
             ans[i] = mn;
         }
