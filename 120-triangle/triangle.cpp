@@ -1,15 +1,19 @@
 class Solution {
 public:
-    int f(int r, int i, vector<vector<int>>&dp, vector<vector<int>>&tr, int n) {
-        if(r >= n) return 0;
-        if(dp[r][i] != 1e8) return dp[r][i];
-        dp[r][i] = min(f(r+1, i, dp, tr, n), f(r+1, i+1, dp, tr, n));
-        return dp[r][i] += tr[r][i];
-    }
 
     int minimumTotal(vector<vector<int>>& tr) {
         int n = tr.size();
         vector<vector<int>> dp(n, vector<int>(n, 1e8));
-        return f(0, 0, dp, tr, n);
+        for(int i=0;i<n;i++) {
+            dp[n-1][i] = tr[n-1][i];
+        }
+
+        for(int i=n-2;i>=0;i--) {
+            for(int j=0;j<=i;j++) {
+                dp[i][j] = tr[i][j] + min(dp[i+1][j], dp[i+1][j+1]);
+            }
+        }
+
+        return dp[0][0];
     }
 };
