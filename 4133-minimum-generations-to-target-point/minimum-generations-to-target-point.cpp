@@ -8,7 +8,7 @@ public:
         set<vector<int>> st;
         for(auto &v : points) st.insert(v);
 
-        for(int k=1;k<=13;k++) {
+        for(int k=1;k<=15;k++) {
             set<vector<int>> temp;
             for(auto it1 = st.begin(); it1 != st.end(); it1++) {
                 auto it2 = it1;
