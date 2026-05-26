@@ -1,6 +1,7 @@
 class Solution {
 public:
     int f(int idx, int T, vector<vector<int>>&dp, vector<int>&coins) {
+        if(T == 0) return 1;
         if(idx == 0) {
             return (T%coins[0] == 0);
         }
