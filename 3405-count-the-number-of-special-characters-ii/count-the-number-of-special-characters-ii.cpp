@@ -2,7 +2,7 @@ class Solution {
 public:
     int numberOfSpecialChars(string word) {
         int cnt = 0;
-        map<char, int> mp;
+        unordered_map<char, int> mp;
         for(int i=0;i<word.size();i++) {
             if(word[i] >='a' && word[i] <= 'z') mp[word[i]] = i;
             else if(!mp.count(word[i])) mp[word[i]] = i;
