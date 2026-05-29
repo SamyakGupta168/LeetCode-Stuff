@@ -10,35 +10,31 @@ public:
         return (i == s2.size());
     }
 
-    int f(int len, int idx, vector<vector<int>>&v, vector<string>& words, vector<vector<int>>&dp) {
-        if(len-1 < 0) return 1;
-        if(v[len-1].empty()) return 1;
-        if(dp[len][idx] != -1) return dp[len][idx];
+    int f(int idx, vector<string>& words, vector<int>&dp, int V) {
+        if(idx == V-1) return 1;
+        if(dp[idx] != -1) return dp[idx];
 
         int maxi = 1;
-        for(auto &ind : v[len-1]) {
-            if(check(words[idx], words[ind])) {
-                maxi = max(maxi, 1 + f(len-1, ind, v, words, dp));
+        for(int i=idx+1;i<V;i++) {
+            if(check(words[idx], words[i])) {
+                maxi = max(maxi, 1 + f(i, words, dp, V));
             }
         }
-        return dp[len][idx] = maxi;
+        return dp[idx] = maxi;
     }
 
     int longestStrChain(vector<string>& words) {
         int V = words.size();
-        int maxHeight = 0, currHeight = 0;
-        vector<vector<int>> v(16+1);
-        for(int i=0;i<V;i++) {
-            v[words[i].size()].push_back(i);
-        }
         
-        vector<vector<int>> dp(16+1, vector<int>(V, -1));
-        int ans = -1;
-        for(int i=16;i>=1;i--) {
-            for(int j=0;j<v[i].size();j++) {
-                if(dp[i][v[i][j]] == -1) {
-                    ans = max(ans, f(i, v[i][j], v, words, dp));
-                }
+        sort(words.begin(), words.end(), [&] (auto &s1, auto &s2) -> bool {
+            return (s1.size() > s2.size());
+        });
+
+        int ans = 0;
+        vector<int> dp(V, -1);
+        for(int i=0;i<V;i++) {
+            if(dp[i] == -1) {
+                ans = max(ans, f(i, words, dp, V));
             }
         }
 
