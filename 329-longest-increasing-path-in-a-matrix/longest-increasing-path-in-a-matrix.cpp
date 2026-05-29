@@ -11,10 +11,7 @@ public:
             int ni = i + dy[k], nj = j + dx[k];
             if(ni>=0 && nj>=0 && ni<n && nj<m) {
                 if(mat[i][j] < mat[ni][nj]) {
-                    int org = mat[i][j];
-                    mat[i][j] = -1;
                     maxi = max(maxi, 1 + f(ni, nj, mat, dp, n, m));
-                    mat[i][j] = org;
                 }
             }
         }
