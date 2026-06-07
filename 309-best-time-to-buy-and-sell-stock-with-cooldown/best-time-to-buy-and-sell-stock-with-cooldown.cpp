@@ -13,7 +13,7 @@ public:
                 profit = f(idx+1, 1, 1, prices, dp);
             }
         } else {
-            profit = max(prices[idx] + f(idx+1, 1, 0, prices, dp), f(idx+1, 0, 1, prices, dp));
+            if(flag) profit = max(prices[idx] + f(idx+1, 1, 0, prices, dp), f(idx+1, 0, 1, prices, dp));
         }
         return dp[idx][buy][flag] = profit;
     }
