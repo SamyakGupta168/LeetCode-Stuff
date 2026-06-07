@@ -13,8 +13,8 @@ class Solution {
 public:
     TreeNode* createBinaryTree(vector<vector<int>>& desc) {
         int n = desc.size();
-        map<int, TreeNode*> mp;
-        map<int,int> isChild;
+        unordered_map<int, TreeNode*> mp;
+        unordered_map<int,int> isChild;
         for(int i=0;i<n;i++) {
             int parent = desc[i][0], child = desc[i][1], left = desc[i][2];
             if(!isChild.count(parent)) isChild[parent] = 0;
