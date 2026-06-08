@@ -31,7 +31,18 @@ public:
             return (s1.size() < s2.size());
         });
 
-        vector<vector<int>> dp(n, vector<int>(n+1, -1));
-        return f(n-1, n, words, dp);
+        vector<vector<int>> dp(n+1, vector<int>(n+2, 0));
+        for(int i=1;i<=n;i++) {
+            for(int next=i+1;next<=n+1;next++) {
+                int notTake = dp[i-1][next];
+                int take = 0;
+                if(next == n+1 || check(words[i-1], words[next-1])) {
+                    take = 1 + dp[i-1][i];
+                }
+                dp[i][next] = max(take, notTake);
+            }
+        }
+
+        return dp[n][n+1];
     }
 };
