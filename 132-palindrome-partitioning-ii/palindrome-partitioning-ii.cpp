@@ -9,24 +9,19 @@ public:
         return true;
     }
 
-    int f(int i, string &s, vector<int>&dp) {
-        int n = s.size();
-        if(i == n) return 0;
-        if(dp[i] != -1) return dp[i];
-
-        int minCost = 1e9;
-        string temp = "";
-        for(int j=i;j<n;j++) {
-            temp += s[j];
-            if(isPalindrome(temp)) minCost = min(minCost, 1 + f(j+1, s, dp));
-        }
-
-        return dp[i] = minCost;
-    }
-
     int minCut(string s) {
         int n = s.size();
-        vector<int> dp(n, -1);
-        return f(0, s, dp) - 1;
+        vector<int> dp(n+1, 0);
+        
+        for(int i=n-1;i>=0;i--) {
+            string temp = "";
+            dp[i] = 1e9;
+            for(int j=i;j<n;j++) {
+                temp += s[j];
+                if(isPalindrome(temp)) dp[i] = min(dp[i], 1 + dp[j+1]);
+            }
+        }
+
+        return dp[0] - 1;
     }
 };
