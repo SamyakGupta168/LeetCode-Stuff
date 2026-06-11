@@ -1,23 +1,22 @@
 class Solution {
 public:
-    int f(int i, int amt, vector<int>&coins, vector<vector<int>>&dp) {
-        int n = coins.size();
-        if(amt == 0) return 0;
-        if(i == n) return 1e9;
-        if(dp[i][amt] != -1) return dp[i][amt];
-        int notTake = f(i+1, amt, coins, dp);
-        int take = INT_MAX;
-        if(amt >= coins[i]) {
-            take = 1 + f(i, amt - coins[i], coins, dp);
-        }
-
-        return dp[i][amt] = min(take, notTake);
-    }
 
     int coinChange(vector<int>& coins, int amt) {
         int n = coins.size();
-        vector<vector<int>> dp(n, vector<int>(amt+1, -1));
-        int ans = f(0, amt, coins, dp);
-        return (ans != 1e9 ? ans : -1);
+        vector<vector<int>> dp(n+1, vector<int>(amt+1, 0));
+        
+        for(int i=1;i<=amt;i++) dp[n][i] = 1e9;
+
+        for(int i=n-1;i>=0;i--) {
+            for(int j=1;j<=amt;j++) {
+                int notTake = dp[i+1][j];
+                int take = INT_MAX;
+                if(j >= coins[i]) take = 1 + dp[i][j - coins[i]];
+                dp[i][j] = min(take, notTake);
+                if(dp[i][j] == 1e9) dp[i][j] = 1e9;
+            }
+        }
+
+        return (dp[0][amt] != 1e9 ? dp[0][amt] : -1);
     }
 };
