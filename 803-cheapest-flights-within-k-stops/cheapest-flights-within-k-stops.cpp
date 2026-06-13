@@ -10,14 +10,15 @@ public:
         }
 
         vector<int> dist(n, 1e9);
-        priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
-        pq.push({0, {0, src}});
+        // priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
+        queue<pair<int,pair<int,int>>> q;
+        q.push({0, {0, src}});
         dist[src] = 0;
-        while(!pq.empty()) {
-            int stops = pq.top().first;
-            int dis=  pq.top().second.first;
-            int node = pq.top().second.second;
-            pq.pop();
+        while(!q.empty()) {
+            int stops = q.front().first;
+            int dis=  q.front().second.first;
+            int node = q.front().second.second;
+            q.pop();
 
             if(stops == k+1) continue;
 
@@ -26,7 +27,7 @@ public:
                 int edw = it.second;
                 if(dis + edw < dist[adjNode]) {
                     dist[adjNode] = dis + edw;
-                    pq.push({stops + 1, {dist[adjNode], adjNode}});
+                    q.push({stops + 1, {dist[adjNode], adjNode}});
                 }
             }
         }
