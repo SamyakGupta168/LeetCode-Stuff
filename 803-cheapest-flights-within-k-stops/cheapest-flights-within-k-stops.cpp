@@ -1,38 +1,36 @@
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
-        vector<vector<pair<int, int>>> adj(n);
+        vector<vector<pair<int,int>>> adj(n);
         for(auto &v : flights) {
-            adj[v[0]].push_back({v[1], v[2]});
+            int from = v[0];
+            int to = v[1];
+            int wt = v[2];
+            adj[from].push_back({to, wt});
         }
 
-        vector<int> dist(n, INT_MAX);
-        // priority_queue<pair<pair<int,int>, int>, vector<pair<pair<int,int>, int>>, greater<pair<pair<int,int>, int>>> pq;
-        // Priority queue will store this {{stops, dist}, node}
-        queue<pair<pair<int,int>, int>> pq;
+        vector<int> dist(n, 1e9);
+        priority_queue<pair<int,pair<int,int>>, vector<pair<int,pair<int,int>>>, greater<pair<int,pair<int,int>>>> pq;
+        pq.push({0, {0, src}});
         dist[src] = 0;
-        pq.push({{0, 0}, src});
-        int ans = INT_MAX;
         while(!pq.empty()) {
-            int stops = pq.front().first.first;
-            int dis = pq.front().first.second;
-            int node = pq.front().second;
+            int stops = pq.top().first;
+            int dis=  pq.top().second.first;
+            int node = pq.top().second.second;
             pq.pop();
 
-            if(stops > k) continue;
-            // if(node == dst) ans = min(ans, dis);
+            if(stops == k+1) continue;
 
-            for(auto &it : adj[node]) {
+            for(auto it : adj[node]) {
                 int adjNode = it.first;
-                int edgeWeight = it.second;
-                if(dis + edgeWeight < dist[adjNode]) {
-                    dist[adjNode] = dis + edgeWeight;
-                    if(adjNode == dst) pq.push({{stops, dist[adjNode]}, adjNode});
-                    else pq.push({{stops+1, dist[adjNode]}, adjNode});
+                int edw = it.second;
+                if(dis + edw < dist[adjNode]) {
+                    dist[adjNode] = dis + edw;
+                    pq.push({stops + 1, {dist[adjNode], adjNode}});
                 }
             }
         }
 
-        return ((dist[dst] == INT_MAX) ? -1 : dist[dst]);
+        return (dist[dst] != 1e9 ? dist[dst] : -1);
     }
 };
