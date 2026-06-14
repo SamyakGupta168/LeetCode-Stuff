@@ -1,16 +1,18 @@
 class Solution {
 public:
-    int f(int i, vector<int>&nums, int tar) {
+    int f(int i, int tar, vector<int>&nums, map<int,map<int,int>> &dp) {
         if(i < 0) {
             return tar == 0;
         }
-        int ways = f(i-1, nums, tar - nums[i]);
-        ways += f(i-1, nums, tar + nums[i]);
-        return ways;
+        if(dp[i].count(tar)) return dp[i][tar];
+        int ways = f(i-1, tar - nums[i], nums, dp);
+        ways += f(i-1, tar + nums[i], nums, dp);
+        return dp[i][tar] = ways;
     }
 
     int findTargetSumWays(vector<int>& nums, int tar) {
         int n = nums.size();
-        return f(n-1, nums, tar);
+        map<int,map<int,int>> dp;
+        return f(n-1, tar, nums, dp);
     }
 };
