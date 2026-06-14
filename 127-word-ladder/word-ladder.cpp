@@ -5,6 +5,7 @@ public:
         set<string> st;
         for(auto &s : wordList) st.insert(s);
 
+        st.erase(beginWord);
         queue<pair<int, string>> q;
         q.push({1, beginWord});
         while(!q.empty()) {
