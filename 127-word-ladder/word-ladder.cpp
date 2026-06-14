@@ -1,33 +1,32 @@
 class Solution {
 public:
-    int bfs(string &beginWord, string &endWord, vector<string>&wordList) {
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        int n = wordList.size();
         set<string> st;
         for(auto &s : wordList) st.insert(s);
-        queue<pair<string,int>> q;
-        q.push({beginWord, 1});
-        while(!q.empty()) {
-            string node = q.front().first;
-            int level = q.front().second;
-            q.pop();
-            if(node==endWord) return level;
 
-            for(int i=0;i<node.size();i++) {
-                char orignal = node[i];
-                for(char ch='a';ch<='z';ch++) {
-                    node[i] = ch;
-                    if(st.find(node)!=st.end()) {
-                        q.push({node, level+1});
-                        st.erase(node);
+        queue<pair<int, string>> q;
+        q.push({1, beginWord});
+        while(!q.empty()) {
+            int steps = q.front().first;
+            string word = q.front().second;
+            q.pop();
+
+            if(word == endWord) return steps;
+
+            for(auto &ch : word) {
+                char org = ch;
+                for(char c='a';c<='z';c++) {
+                    ch = c;
+                    if(st.count(word)) {
+                        q.push({steps + 1, word});
+                        st.erase(word);
                     }
                 }
-                node[i] = orignal;
+                ch = org;
             }
         }
-        
-        return 0;
-    }
 
-    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        return bfs(beginWord, endWord, wordList);
+        return 0;
     }
 };
