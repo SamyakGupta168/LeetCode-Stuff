@@ -47,42 +47,42 @@ class DisjointSet {
 class Solution {
 public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
-        int V = accounts.size();
-        DisjointSet ds(V);
-        
-        map<string,int> node;
+        int n = accounts.size();
+        DisjointSet ds(n);
+
+        unordered_map<string, int> mp;
+        for(int i=0;i<n;i++) {
+            for(int j=1;j<accounts[i].size();j++) {
+                string &mail = accounts[i][j];
+                if(mp.count(mail)) {
+                    ds.unionBySize(mp[mail], i);
+                } else mp[mail] = i;
+            }
+        }
+
+        vector<vector<string>> mergedMail(n);
+        for(auto p : mp) {
+            string mail = p.first;
+            int acc = ds.findUPar(p.second);
+            mergedMail[acc].push_back(mail);
+        }
+
+        for(auto &list : mergedMail) {
+            sort(list.begin(), list.end());
+        }
+
+        vector<vector<string>> ans;
         int idx = 0;
-        for(auto &v : accounts) {
-            for(int i=1;i<v.size();i++) {
-                if(!node.count(v[i])) {
-                    node[v[i]] = idx;
-                } else {
-                    ds.unionByRank(idx, node[v[i]]);
-                }
+        for(auto &list : mergedMail) {
+            if(!list.empty()) {
+                vector<string> acc;
+                acc.push_back(accounts[idx][0]);
+                for(auto &mail : list) acc.push_back(mail);
+                ans.push_back(acc);
             }
             idx++;
         }
-        
-        vector<vector<string>> res(V);
-        for(auto p : node) {
-            string str = p.first;
-            int curr = p.second;
-            int ulp = ds.findUPar(curr);
-            res[ulp].push_back(str);
-        }
-        
-        vector<vector<string>> ans;
-        for(int i=0;i<V;i++) {
-            if(res[i].empty()) continue;
-            vector<string> temp;
-            sort(res[i].begin(), res[i].end());
-            temp.push_back(accounts[i][0]);
-            for(auto &s : res[i]) {
-                temp.push_back(s);
-            }
-            ans.push_back(temp);
-        }
-        
+
         return ans;
     }
 };
