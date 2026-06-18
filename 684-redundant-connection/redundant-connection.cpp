@@ -49,16 +49,15 @@ public:
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
         int n = edges.size();
         DisjointSet ds(n);
-        int node1 = -1, node2 = -1;
         for(auto &x : edges) {
             int u = x[0], v = x[1];
             if(ds.findUPar(u) != ds.findUPar(v)) {
                 ds.unionByRank(u, v);
             } else {
-                node1 = u, node2 = v;
+                return {u, v};
             }
         }
 
-        return {node1, node2};
+        return {-1, -1};
     }
 };
