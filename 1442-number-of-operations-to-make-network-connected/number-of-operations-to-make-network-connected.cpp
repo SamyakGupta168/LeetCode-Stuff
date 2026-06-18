@@ -1,6 +1,6 @@
 class DisjointSet {
-    vector<int> rank, parent, size;
     public:
+    vector<int> rank, parent, size;
     DisjointSet(int n) {
         rank.resize(n+1, 0);
         parent.resize(n+1);
@@ -46,21 +46,17 @@ class DisjointSet {
 
 class Solution {
 public:
-    int makeConnected(int n, vector<vector<int>>& connections) {
-        if(connections.size() < n-1) return -1;
-        
+    int makeConnected(int n, vector<vector<int>>& con) {
+        if(con.size() < n-1) return -1;
+
         DisjointSet ds(n);
-        for(auto &it : connections) {
-            int u = it[0];
-            int v = it[1];
-            ds.unionByRank(u, v);
+        for(auto &x : con) {
+            int u = x[0], v = x[1];
+            ds.unionBySize(u, v);
         }
 
         int cnt = 0;
-        for(int i=0;i<n;i++) {
-            if(ds.findUPar(i) == i) cnt++;
-        }
-
-        return (cnt == 1) ? 0 : cnt-1;
+        for(int i=0;i<n;i++) cnt += ds.parent[i] == i;
+        return cnt - 1;
     }
 };
