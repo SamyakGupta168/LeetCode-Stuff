@@ -10,7 +10,7 @@ public:
         while(!st.empty() && st.top().first <= price) {
             st.pop();
         }
-        int span = (st.empty() ? idx + 1 : idx - st.top().second);
+        int span = st.empty() ? idx + 1 : idx - st.top().second;
         st.push({price, idx});
         idx++;
         return span;
