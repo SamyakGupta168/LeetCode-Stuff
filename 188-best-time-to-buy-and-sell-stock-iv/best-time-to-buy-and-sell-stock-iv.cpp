@@ -1,24 +1,26 @@
 class Solution {
 public:
-    int maxProfit(int k, vector<int>& prices) {
+    int f(int i, int buy, int cap, vector<vector<vector<int>>>&dp, vector<int>&prices) {
         int n = prices.size();
-        vector<vector<int>> next(2, vector<int>(k+1, 0)), curr(2, vector<int>(k+1, 0));
-        
-        for(int i=n-1;i>=0;i--) {
-            for(int buy=0;buy<=1;buy++) {
-                for(int cap=1;cap<=k;cap++) {
-                    int profit = 0;
-                    if(buy) {
-                        profit = max(-prices[i] + next[0][cap], next[1][cap]);
-                    } else {
-                        profit=  max(prices[i] + next[1][cap-1], next[0][cap]);
-                    }
-                    curr[buy][cap] = profit;
-                }
-                next = curr;
-            }
+        if(i == n) return 0;
+        if(cap == 0) return 0;
+        if(dp[i][buy][cap] != -1) return dp[i][buy][cap];
+
+        int maxi = 0;
+        if(buy) {
+            maxi = max(maxi, -prices[i] + f(i+1, 0, cap, dp, prices));
+            maxi = max(maxi, f(i+1, 1, cap ,dp, prices));
+        } else {
+            maxi = max(maxi, prices[i] + f(i+1, 1, cap-1, dp, prices));
+            maxi = max(maxi, f(i+1, 0, cap, dp, prices));
         }
 
-        return next[1][k];
+        return dp[i][buy][cap] = maxi;
+    }
+
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<vector<int>>> dp(n, vector<vector<int>> (2, vector<int>(k+1, -1)));
+        return f(0, 1, k, dp, prices);
     }
 };
