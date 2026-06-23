@@ -1,35 +1,19 @@
 class Solution {
 public:
-    int f(int i, int j, vector<vector<int>>&dp, vector<vector<int>>&grid, int n, int m) {
-        if(i<0 || i>=n || j<0 || j>=m) return 0;
-        if(grid[i][j] == 1) return 0;
+    int f(int i, int j, vector<vector<int>>&dp, vector<vector<int>>&grid) {
         if(i == 0 && j == 0) return 1;
         if(dp[i][j] != -1) return dp[i][j];
 
-        return dp[i][j] = f(i-1, j, dp, grid, n, m) + f(i, j-1, dp, grid, n, m);
+        int cnt = 0;
+        if(i-1 >= 0 && grid[i-1][j] == 0) cnt += f(i-1, j, dp, grid);
+        if(j-1 >= 0 && grid[i][j-1] == 0) cnt += f(i, j-1, dp, grid);
+        return dp[i][j] = cnt;
     }
 
     int uniquePathsWithObstacles(vector<vector<int>>& grid) {
         int n = grid.size(), m = grid[0].size();
-        vector<int> dp(m, -1);
-        for(int i=0;i<n;i++) {
-            vector<int> temp(m, -1);
-            for(int j=0;j<m;j++) {
-                if(grid[i][j] == 1) {
-                    temp[j] = 0;
-                    continue;
-                }
-                if(i == 0 && j == 0) {
-                    temp[j] = 1;
-                    continue;
-                }
-                temp[j] = 0;
-                if(j-1 >= 0) temp[j] += temp[j-1];
-                if(i-1 >= 0) temp[j] += dp[j]; 
-            }
-            dp = temp;
-        }
-
-        return dp[m-1];
+        if(grid[0][0] == 1 || grid[n-1][m-1] == 1) return 0;
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        return f(n-1, m-1, dp, grid);
     }
 };
