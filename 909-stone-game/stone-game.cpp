@@ -12,10 +12,12 @@ public:
 
         for(int i=n-1;i>=0;i--) {
             for(int j=i+1;j<n;j++) {
+                dp[i][j][1] = INT_MIN, dp[i][j][0] = INT_MAX;
+
                 dp[i][j][1] = max(dp[i][j][1], piles[i] + dp[i+1][j][0]);
                 dp[i][j][1] = max(dp[i][j][1], piles[j] + dp[i][j-1][0]);
-                dp[i][j][0] = max(dp[i][j][0], -piles[i] + dp[i+1][j][1]);
-                dp[i][j][0] = max(dp[i][j][0], -piles[j] + dp[i][j-1][1]);
+                dp[i][j][0] = min(dp[i][j][0], -piles[i] + dp[i+1][j][1]);
+                dp[i][j][0] = min(dp[i][j][0], -piles[j] + dp[i][j-1][1]);
             }
         }
 
