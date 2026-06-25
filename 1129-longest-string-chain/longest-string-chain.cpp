@@ -19,7 +19,7 @@ public:
         vector<vector<int>> dp(n+2, vector<int>(n+2, 0));
 
         for(int i=n;i>=1;i--) {
-            for(int j=i;j>=0;j--) { 
+            for(int j=i-1;j>=0;j--) { 
                 int take = 0;
                 if(j == 0 || check(words[i-1], words[j-1])) {
                     take = 1 + dp[i+1][i];
