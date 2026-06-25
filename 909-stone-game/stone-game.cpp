@@ -3,7 +3,7 @@ public:
 
     bool stoneGame(vector<int>& piles) {
         int n = piles.size();
-        vector<vector<vector<int>>> dp(n+1, vector<vector<int>>(n+1, vector<int>(2, 0)));
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(2, 0)));
 
         for(int i=0;i<n;i++) {
             dp[i][i][1] = piles[i];
