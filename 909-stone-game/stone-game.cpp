@@ -15,6 +15,6 @@ public:
             }
         }
 
-        return (dp[0][n-1] >= 0); 
+        return (dp[0][n-1] > 0); 
     }
 };
