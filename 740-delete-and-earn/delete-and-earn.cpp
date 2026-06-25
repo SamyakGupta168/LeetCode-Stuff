@@ -29,7 +29,18 @@ public:
         }
 
         int n = a.size();
-        vector<vector<int>> dp(n, vector<int>(2, -1));
-        return f(0, 1, a, dp);
+        vector<vector<int>> dp(n+1, vector<int>(2, 0));
+
+        for(int i=n-1;i>=0;i--) {
+            dp[i][1] = max(dp[i][1], a[i].second * a[i].first + dp[i+1][0]);
+            dp[i][1] = max(dp[i][1], dp[i+1][1]);
+
+            dp[i][0] = max(dp[i][0], dp[i+1][1]);
+            if((i == 0) || (a[i].first != a[i-1].first + 1)) {
+                dp[i][0] = max(dp[i][0], a[i].second * a[i].first + dp[i+1][0]);
+            }
+        }
+
+        return dp[0][1];
     }
 };
