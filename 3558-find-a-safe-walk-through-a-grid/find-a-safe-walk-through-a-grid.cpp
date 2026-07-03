@@ -6,15 +6,17 @@ public:
     bool findSafeWalk(vector<vector<int>>& grid, int health) {
         int n = grid.size(), m = grid[0].size();
         vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
-        priority_queue<pair<int, pair<int,int>>, vector<pair<int, pair<int,int>>>, greater<pair<int, pair<int,int>>>> pq;
+        queue<pair<int,pair<int,int>>> pq;
         pq.push({grid[0][0], {0, 0}});
         dist[0][0] = grid[0][0];
         while(!pq.empty()) {
-            int dis = pq.top().first;
-            int r = pq.top().second.first;
-            int c = pq.top().second.second;
+            int dis = pq.front().first;
+            int r = pq.front().second.first;
+            int c = pq.front().second.second;
             pq.pop();
-            // if(r == n-1 && c == m-1) return dis < health;
+            
+            if(dis > health) continue;
+
             for(int i=0;i<4;i++) {
                 int nr = r + dx[i], nc = c + dy[i];
                 if(nr >= 0 && nc >= 0 && nr < n && nc < m) {
