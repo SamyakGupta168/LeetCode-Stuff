@@ -6,28 +6,28 @@ public:
     int maximumSafenessFactor(vector<vector<int>>& grid) {
         int n = grid.size(), m = grid[0].size();
         vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
-        priority_queue<pair<int, pair<int,int>>, vector<pair<int, pair<int,int>>>, greater<pair<int, pair<int,int>>>> pq;
+        queue<pair<int, pair<int,int>>> q;
 
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 if(grid[i][j] == 1) {
                     dist[i][j] = 0;
-                    pq.push({0, {i, j}});
+                    q.push({0, {i, j}});
                 }
             }
         }
 
-        while(!pq.empty()) {
-            int dis = pq.top().first;
-            int r = pq.top().second.first;
-            int c = pq.top().second.second;
-            pq.pop();
+        while(!q.empty()) {
+            int dis = q.front().first;
+            int r = q.front().second.first;
+            int c = q.front().second.second;
+            q.pop();
             for(int i=0;i<4;i++) {
                 int nr = r + dx[i], nc = c + dy[i];
                 if(nr >= 0 && nc >= 0 && nr < n && nc < m) {
                     if(dis + 1 < dist[nr][nc]) {
                         dist[nr][nc] = dis + 1;
-                        pq.push({dist[nr][nc], {nr, nc}});
+                        q.push({dist[nr][nc], {nr, nc}});
                     }
                 }
             }
