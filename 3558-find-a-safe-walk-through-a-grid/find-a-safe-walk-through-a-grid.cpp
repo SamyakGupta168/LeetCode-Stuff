@@ -14,6 +14,7 @@ public:
             int r = pq.top().second.first;
             int c = pq.top().second.second;
             pq.pop();
+            if(r == n-1 && c == m-1) return dis < health;
             for(int i=0;i<4;i++) {
                 int nr = r + dx[i], nc = c + dy[i];
                 if(nr >= 0 && nc >= 0 && nr < n && nc < m) {
