@@ -1,33 +1,31 @@
 class Solution {
 public:
-    int f(int i, int flag, vector<vector<int>>&dp, string &s, string &t) {
-        if(i == 0) {
-            if(flag) return 1;
-            else return s[0] == t[0];
-        }
-        if(dp[i][flag] != -1) return dp[i][flag];
-
-        if(flag) {
-            int idx = f(i-1, 1, dp, s, t);
-            if(idx == s.size()) return dp[i][1] = idx;
-            if(s[idx] == t[i]) return dp[i][1] = idx + 1;
-            idx = max(idx, f(i-1, 0, dp, s, t) + 1);
-            return dp[i][1] = idx;
-        } else {
-            int idx = f(i-1, 0, dp, s, t);
-            if(idx == s.size()) return dp[i][0] = idx;
-            if(s[idx] == t[i]) return dp[i][0] = idx + 1;
-            return dp[i][0] = idx;
-        }
-
-        return -1;
-    }
-
     bool canMakeSubsequence(string s, string t) {
         int n = t.size();
-        vector<vector<int>> dp(n, vector<int>(2, -1));
-        int idx1 = f(n-1, 1, dp, s, t);
-        // int idx2 = f(n-1, 0, dp, s, t);
-        return idx1 == s.size();
+        vector<vector<int>> dp(n, vector<int>(2, 0));
+        dp[0][1] = 1;
+        dp[0][0] = (s[0] == t[0]);
+        for(int i=1;i<n;i++) {
+            int idx1 = dp[i-1][1];
+            if(idx1 == s.size()) {
+                dp[i][1] = idx1;
+            } else if(s[idx1] == t[i]) {
+                dp[i][1] = idx1 + 1;
+            } else {
+                idx1 = max(idx1, dp[i-1][0] + 1);
+                dp[i][1] = idx1;
+            }
+
+            int idx2 = dp[i-1][0];
+            if(idx2 == s.size()) {
+                dp[i][0] = idx2;
+            } else if(s[idx2] == t[i]) {
+                dp[i][0] = idx2 + 1;
+            } else {
+                dp[i][0] = idx2;
+            }
+        }
+
+        return dp[n-1][1] == s.size();
     }
 };
