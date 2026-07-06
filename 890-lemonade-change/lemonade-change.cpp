@@ -1,7 +1,7 @@
 class Solution {
 public:
     bool lemonadeChange(vector<int>& bills) {
-        map<int, int> mp;
+        unordered_map<int, int> mp;
         for(auto x : bills) {
             if(x == 5) mp[x]++;
             else if(x == 10) {
