@@ -9,6 +9,7 @@ public:
 
         if(flag) {
             int idx = f(i-1, 1, dp, s, t);
+            if(idx == s.size()) return dp[i][1] = idx;
             if(s[idx] == t[i]) return dp[i][1] = idx + 1;
             idx = max(idx, f(i-1, 0, dp, s, t) + 1);
             return dp[i][1] = idx;
@@ -25,7 +26,7 @@ public:
         int n = t.size();
         vector<vector<int>> dp(n, vector<int>(2, -1));
         int idx1 = f(n-1, 1, dp, s, t);
-        int idx2 = f(n-1, 0, dp, s, t);
-        return idx1 == s.size() || idx2 == s.size();
+        // int idx2 = f(n-1, 0, dp, s, t);
+        return idx1 == s.size();
     }
 };
