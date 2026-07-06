@@ -15,7 +15,7 @@ public:
             return dp[i][1] = idx;
         } else {
             int idx = f(i-1, 0, dp, s, t);
-            if(idx == s.size()) return dp[i][1] = idx;
+            if(idx == s.size()) return dp[i][0] = idx;
             if(s[idx] == t[i]) return dp[i][0] = idx + 1;
             return dp[i][0] = idx;
         }
