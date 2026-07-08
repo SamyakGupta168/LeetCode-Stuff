@@ -5,92 +5,75 @@ private:
     int n;
     mutex m;
     condition_variable cv;
-    int value;
+    int i;
 
 public:
     FizzBuzz(int n) {
         this->n = n;
-        value = 1;
+        i = 1;
     }
 
     // printFizz() outputs "fizz".
     void fizz(function<void()> printFizz) {
-        while (true) {
-        unique_lock<mutex> lock(m);
+        while(i <= n) {
+            unique_lock<mutex> lock(m);
+            while(i <= n && !(i % 3 == 0 && i % 5 != 0)) {
+                cv.wait(lock);
+            }
 
-        cv.wait(lock, [&] {
-            return value > n ||
-                   (value % 3 == 0 && value % 5 != 0);
-        });
-
-        if (value > n)
-            return;
-
-        printFizz();
-        value++;
-
-        cv.notify_all();
-    }
+            if(i <= n) {
+                printFizz();
+                i++;
+            }
+            cv.notify_all();
+        }
     }
 
     // printBuzz() outputs "buzz".
     void buzz(function<void()> printBuzz) {
-        while (true) {
-        unique_lock<mutex> lock(m);
+        while(i <= n) {
+            unique_lock<mutex> lock(m);
+            while(i <= n && !(i % 5 == 0 && i % 3 != 0)) {
+                cv.wait(lock);
+            }
 
-        cv.wait(lock, [&] {
-            return value > n ||
-                   (value % 5 == 0 && value % 3 != 0);
-        });
-
-        if (value > n)
-            return;
-
-        printBuzz();
-        value++;
-
-        cv.notify_all();
-    }
+            if(i <= n) {
+                printBuzz();
+                i++;
+            }
+            cv.notify_all();
+        }
     }
 
     // printFizzBuzz() outputs "fizzbuzz".
-    void fizzbuzz(function<void()> printFizzBuzz) {
+	void fizzbuzz(function<void()> printFizzBuzz) {
+        while(i <= n) {
+            unique_lock<mutex> lock(m);
+            while(i <= n && !(i % 15 == 0)) {
+                cv.wait(lock);
+            }
 
-        while (true) {
-        unique_lock<mutex> lock(m);
-
-        cv.wait(lock, [&] {
-            return value > n ||
-                   (value % 15 == 0);
-        });
-
-        if (value > n)
-            return;
-
-        printFizzBuzz();
-        value++;
-
-        cv.notify_all();
-    }
+            if(i <= n) {
+                printFizzBuzz();
+                i++;
+            }
+            cv.notify_all();
+        }
     }
 
     // printNumber(x) outputs "x", where x is an integer.
     void number(function<void(int)> printNumber) {
-        while (true) {
-        unique_lock<mutex> lock(m);
+        while(i <= n) {
+            unique_lock<mutex> lock(m);
+            while(i <= n && !(i % 5 != 0 && i % 3 != 0)) {
+                cv.wait(lock);
+            }
 
-        cv.wait(lock, [&] {
-            return value > n ||
-                   (value % 3 != 0 && value % 5 != 0);
-        });
-
-        if (value > n)
-            return;
-
-        printNumber(value);
-        value++;
-
-        cv.notify_all();
-    }
+            if(i <= n) {
+                printNumber(i);
+                i++;
+            }
+            cv.notify_all();
+        }
     }
 };
