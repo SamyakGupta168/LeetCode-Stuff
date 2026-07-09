@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int f(int prev, int diff, vector<vector<int>>&dp, vector<int>&nums) {
+    int f(int prev, int diff, int dp[][1001], vector<int>&nums) {
         if(dp[prev][diff + 500] != -1) return dp[prev][diff+500];
         int maxLen = 0;
         for(int i=prev+1;i<nums.size();i++) {
@@ -13,7 +13,8 @@ public:
 
     int longestArithSeqLength(vector<int>& nums) {
         int n = nums.size();
-        vector<vector<int>> dp(n, vector<int>(1001, -1));
+        int dp[n][1001];
+        memset(dp, -1, sizeof(dp));
         int maxi = 0;
         for(int i=0;i<n;i++) {
             for(int j=i+1;j<n;j++) {
