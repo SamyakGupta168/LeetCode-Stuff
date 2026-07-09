@@ -1,22 +1,27 @@
 class Solution {
 public:
-
     int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
-        int n = nums1.size(), m = nums2.size();
-        vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
-        map<int,int> idx;
-        for(int i=n-1;i>=0;i--) {
-            idx[nums1[i]] = i;
-            for(int j=m-1;j>=0;j--) {
-                int notTake = dp[i][j+1];
-                int take = 0;
-                if(idx.count(nums2[j])) {
-                    int k = idx[nums2[j]];
-                    take = 1 + dp[k+1][j+1];
-                }
-                dp[i][j] = max(take, notTake);
+        int n = nums1.size();
+        int m = nums2.size();
+
+        vector<int> dp(m + 1, 0);
+
+        for (int i = 1; i <= n; i++)
+        {
+            int last = dp[0];
+            for (int j = 1; j <= m; j++)
+            {
+                int tmp = dp[j];
+
+                if (nums1[i - 1] == nums2[j - 1])
+                    dp[j] = last + 1;
+                else
+                    dp[j] = max(dp[j], dp[j - 1]);
+
+                last = tmp;
             }
         }
-        return dp[0][0];
+        
+        return dp.back();
     }
 };
