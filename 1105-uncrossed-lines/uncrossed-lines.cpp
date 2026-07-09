@@ -4,7 +4,7 @@ public:
     int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
         int n = nums1.size(), m = nums2.size();
         vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
-        unordered_map<int,int> idx;
+        map<int,int> idx;
         for(int i=n-1;i>=0;i--) {
             idx[nums1[i]] = i;
             for(int j=m-1;j>=0;j--) {
