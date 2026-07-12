@@ -1,7 +1,7 @@
 class Solution {
 public:
     int minExtraChar(string s, vector<string>& dictionary) {
-        set<string> dic;
+        unordered_set<string> dic;
         for(auto &str : dictionary) dic.insert(str);
         int n = s.size();
         vector<int> dp(n+1, 0);
