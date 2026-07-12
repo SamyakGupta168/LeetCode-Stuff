@@ -2,26 +2,31 @@ class Solution {
 public:
     int candy(vector<int>& rat) {
         int n = rat.size();
-        vector<int> left(n, 1);
-        for(int i=1;i<n;i++) {
-            if(rat[i] > rat[i-1]) {
-                left[i] = left[i-1] + 1;
-            } else {
-                left[i] = 1;
+        int sum = 1, i = 1;
+        while(i < n) {
+            if(rat[i] == rat[i-1]) {
+                sum += 1;
+                i++;
+                continue;
             }
+
+            int peak = 1;
+            while(i < n && rat[i] > rat[i-1]) {
+                peak++;
+                sum += peak;
+                i++;
+            }
+
+            int down = 1;
+            while(i < n && rat[i] < rat[i-1]) {
+                sum += down;
+                down++;
+                i++;
+            }
+
+            if(down > peak) sum += down - peak;
         }
 
-        int cnt = max(1, left[n-1]), right = 1, cur = 1;
-        for(int i=n-2;i>=0;i--) {
-            if(rat[i] > rat[i+1]) {
-                cur = right + 1;
-            } else {
-                cur = 1;
-            }
-            cnt += max(left[i], cur);
-            right = cur;
-        }
-
-        return cnt;
+        return sum;
     }
 };
