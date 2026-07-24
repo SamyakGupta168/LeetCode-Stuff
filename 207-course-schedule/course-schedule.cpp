@@ -1,39 +1,30 @@
 class Solution {
 public:
-    void topo(int V, vector<vector<int>>&adj, vector<int>&indegree, int &cnt) {
-        queue<int> q;
-        for(int i=0;i<V;i++) {
-            if(!indegree[i]) {
-                q.push(i);
-            }
+    bool dfs(int node, vector<int>&vis, vector<int>&pathVis, vector<vector<int>>&adj) {
+        vis[node] = 1;
+        pathVis[node] = 1;
+        for(auto it : adj[node]) {
+            if(!vis[it]) {
+                if(!dfs(it, vis, pathVis, adj)) return false;
+            } else if(pathVis[it]) return false;
         }
-        while(!q.empty()) {
-            int node = q.front();
-            q.pop();
-            cnt++;
-            for(auto it : adj[node]) {
-                indegree[it]--;
-                if(!indegree[it]) q.push(it);
-            }
-        }
+        pathVis[node] = 0;
+        return true;
     }
 
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        int V = numCourses;
-        vector<vector<int>> adj(V);
-        for(auto &v : prerequisites) {
+    bool canFinish(int n, vector<vector<int>>& pr) {
+        vector<vector<int>> adj(n);
+        for(auto &v : pr) {
             adj[v[1]].push_back(v[0]);
         }
 
-        vector<int> indegree(V, 0);
-        for(auto &v : adj) {
-            for(auto x : v) {
-                indegree[x]++;
+        vector<int> vis(n, 0), pathVis(n, 0);
+        for(int i=0;i<n;i++) {
+            if(!vis[i]) {
+                if(!dfs(i, vis, pathVis, adj)) return false;
             }
         }
 
-        int cnt = 0;
-        topo(V, adj, indegree, cnt);
-        return (cnt==V);
+        return true;
     }
 };
