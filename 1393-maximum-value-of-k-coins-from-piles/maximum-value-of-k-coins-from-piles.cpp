@@ -7,9 +7,9 @@ public:
         }
 
         int n = piles.size();
-        vector<vector<ll>> dp(n, vector<ll>(k+1, -2e9));
+        vector<vector<ll>> dp(n, vector<ll>(k+1, 0));
 
-        for(int i=0;i<n;i++) dp[i][0] = 0;
+        // for(int i=0;i<n;i++) dp[i][0] = 0;
 
         for(int j=0;j<min((int)piles[0].size(), k);j++) {
             dp[0][j+1] = piles[0][j];
