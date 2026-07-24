@@ -21,7 +21,7 @@ public:
 
 class Solution {
 public:
-    map<Node*, Node*> mp;
+    unordered_map<Node*, Node*> mp;
 
     Node* cloneGraph(Node* node) {
         if(node == nullptr) return nullptr;
