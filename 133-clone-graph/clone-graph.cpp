@@ -21,24 +21,16 @@ public:
 
 class Solution {
 public:
-    Node* dfs(Node* node, map<Node*, Node*> &mp) {
+    map<Node*, Node*> mp;
+
+    Node* cloneGraph(Node* node) {
         if(node == nullptr) return nullptr;
         Node* newNode = new Node(node->val);
         mp[node] = newNode;
-        auto &v = node->neighbors;
-        auto &ref = newNode->neighbors;
-        for(auto it : v) {
-            if(!mp.count(it)) {
-                ref.push_back(dfs(it, mp));
-            } else {
-                ref.push_back(mp[it]);
-            }
+        for(auto adjNode : node->neighbors) {
+            if(!mp.count(adjNode)) newNode->neighbors.push_back(cloneGraph(adjNode));
+            else newNode->neighbors.push_back(mp[adjNode]);
         }
         return newNode;
-    }
-
-    Node* cloneGraph(Node* node) {
-        map<Node*, Node*> mp;
-        return dfs(node, mp);
     }
 };
