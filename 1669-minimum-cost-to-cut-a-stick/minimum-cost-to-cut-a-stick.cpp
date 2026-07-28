@@ -1,23 +1,22 @@
 class Solution {
 public:
+    using ll = long long;
+    ll f(int i, int j, vector<int>&cuts, vector<vector<ll>>&dp) {
+        if(abs(i - j) <= 1) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        ll minCost = 1e10;
+        for(int k=i+1;k<j;k++) {
+            minCost = min(minCost, cuts[j] - cuts[i] + f(i, k, cuts, dp) + f(k, j, cuts, dp));
+        }
+        return dp[i][j] = minCost;
+    }
 
     int minCost(int n, vector<int>& cuts) {
-        int c = cuts.size();
-        cuts.push_back(n);
         cuts.push_back(0);
+        cuts.push_back(n);
         sort(cuts.begin(), cuts.end());
-
-        vector<vector<int>> dp(c+2, vector<int>(c+2, 0));
-
-        for(int i=c;i>=1;i--) {
-            for(int j=i;j<=c;j++) {
-                dp[i][j] = 1e9;
-                for(int k=i;k<=j;k++) {
-                    dp[i][j] = min(dp[i][j], cuts[j+1] - cuts[i-1] + dp[i][k-1] + dp[k+1][j]);
-                }
-            }
-        }
-
-        return dp[1][c];
+        int m = cuts.size();
+        vector<vector<ll>> dp(m, vector<ll>(m, -1));
+        return (int)f(0, m-1, cuts, dp);
     }
 };
