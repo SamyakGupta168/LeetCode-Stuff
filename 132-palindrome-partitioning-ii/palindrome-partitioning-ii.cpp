@@ -1,27 +1,31 @@
 class Solution {
 public:
+    bool check(string &s) {
+        int l = 0, r = s.size() - 1;
+        while(l < r) {
+            if(s[l] != s[r]) return false;
+            l++, r--;
+        }
+        return true;
+    }
+
+    int f(int i, int j, string &s, vector<vector<int>>&dp) {
+        if(i > j) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        string temp = "";
+        int mini = INT_MAX;
+        for(int k=i;k<=j;k++) {
+            temp += s[k];
+            if(check(temp)) {
+                mini = min(mini, 1 + f(k+1, j, s, dp));
+            }
+        }
+        return dp[i][j] = mini;
+    }
 
     int minCut(string s) {
         int n = s.size();
-        vector<vector<bool>> isPal(n+1, vector<bool>(n+1, true));
-
-        for(int i=n-1;i>=0;i--) {
-            for(int j=i+1;j<n;j++) {
-                isPal[i][j] = false;
-                isPal[i][j] = (s[i] == s[j]) && isPal[i+1][j-1];
-            }
-        }
-
-        vector<int> dp(n+1, 0);
-        for(int i=n-1;i>=0;i--) {
-            dp[i] = 1e9;
-            string temp;
-            for(int j=i;j<n;j++) {
-                temp += s[j];
-                if(isPal[i][j]) dp[i] = min(dp[i], 1 + dp[j+1]);
-            }
-        }
-
-        return dp[0] - 1;
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        return f(0, n-1, s, dp) - 1;
     }
 };
