@@ -1,6 +1,6 @@
 class DisjointSet {
-    public:
     vector<int> rank, parent, size;
+    public:
     DisjointSet(int n) {
         rank.resize(n+1, 0);
         parent.resize(n+1);
@@ -48,44 +48,28 @@ class Solution {
 public:
     int removeStones(vector<vector<int>>& stones) {
         int n = stones.size();
-        map<pair<int,int>, int> node;
-        map<int, vector<int>> row, col;
-        int nodeNo = 0;
-        for(auto &v : stones) {
-            node[{v[0], v[1]}] = nodeNo;
-            nodeNo++;
-            row[v[1]].push_back(v[0]);
-            col[v[0]].push_back(v[1]);
-        }
-
         DisjointSet ds(n);
-        for(auto p : row) {
-            int c = p.first;
-            int prevRow = -1;
-            for(auto r : p.second) {
-                if(prevRow != -1) {
-                    ds.unionBySize(node[{prevRow, c}], node[{r, c}]);
-                }
-                prevRow = r;
-            }
-        }
-
-        for(auto p : col) {
-            int r = p.first;
-            int prevCol = -1;
-            for(auto c : p.second) {
-                if(prevCol != -1) {
-                    ds.unionBySize(node[{r, prevCol}], node[{r, c}]);
-                }
-                prevCol = c;
-            }
-        }
-
-        int ans = 0;
+        unordered_map<int, int> rowNode, colNode;
         for(int i=0;i<n;i++) {
-            if(ds.parent[i] == i) ans += ds.size[i] - 1;
+            int r = stones[i][0], c = stones[i][1];
+            if(!rowNode.count(r)) {
+                rowNode[r] = i+1;
+            } else {
+                ds.unionBySize(rowNode[r], i+1);
+            }
+
+            if(!colNode.count(c)) {
+                colNode[c] = i+1;
+            } else {
+                ds.unionBySize(colNode[c], i+1);
+            }
         }
 
-        return ans;
+        unordered_set<int> st;
+        for(int i=1;i<=n;i++) {
+            st.insert(ds.findUPar(i));
+        }
+
+        return n - (int)st.size();
     }
 };
