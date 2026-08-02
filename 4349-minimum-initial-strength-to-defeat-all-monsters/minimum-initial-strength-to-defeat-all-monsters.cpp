@@ -15,8 +15,7 @@ public:
         ll ans = 0;
         for(int i=n-1;i>=0;i--) {
             if(!ans) {
-                if(diff[i] >= mon[i]) continue;
-                else ans = mon[i] - diff[i];
+                if(diff[i] < mon[i]) ans = mon[i] - diff[i];
             } else {
                 ans += mon[i];
             }
