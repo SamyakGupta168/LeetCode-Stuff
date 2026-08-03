@@ -19,6 +19,7 @@ public:
             int node = pq.top().second.second;
             pq.pop();
 
+            if(cost != dist[node][time]) continue;
             if(node == n-1 || time >= maxTime) continue;
 
             for(auto &it : adj[node]) {
