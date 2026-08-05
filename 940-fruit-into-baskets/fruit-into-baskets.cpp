@@ -2,7 +2,7 @@ class Solution {
 public:
     int totalFruit(vector<int>& fruits) {
         int n = fruits.size();
-        map<int,int> mp;
+        unordered_map<int,int> mp;
         int maxLen = 0;
         int l = 0, r = 0;
         while(r < n) {
