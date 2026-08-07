@@ -3,7 +3,7 @@ public:
     int numSubarraysWithSum(vector<int>& nums, int goal) {
         int n = nums.size();
         vector<int> pref(n, nums[0]);
-        map<int,int> mp;
+        unordered_map<int,int> mp;
         mp[pref[0]]++;
         for(int i=1;i<n;i++) {
             pref[i] = pref[i-1] + nums[i];
