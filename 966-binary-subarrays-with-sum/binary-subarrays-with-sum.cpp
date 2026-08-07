@@ -2,7 +2,7 @@ class Solution {
 public:
     int numSubarraysWithSum(vector<int>& nums, int goal) {
         int n = nums.size();
-        unordered_map<int,int> mp;
+        map<int,int> mp;
         int pref = nums[0];
         mp[pref]++;
         for(int i=1;i<n;i++) {
