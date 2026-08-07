@@ -3,7 +3,7 @@ public:
     int f(vector<int>&nums, int k) {
         if(k <= 0) return 0;
         int n = nums.size();
-        map<int,int> mp;
+        unordered_map<int,int> mp;
         int cnt = 0;
         int l = 0, r = 0;
         while(r < n) {
