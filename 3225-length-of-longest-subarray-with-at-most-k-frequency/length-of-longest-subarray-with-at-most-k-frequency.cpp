@@ -3,7 +3,7 @@ public:
     int maxSubarrayLength(vector<int>& nums, int k) {
         int n = nums.size();
         multiset<int> ms;
-        map<int,int> mp;
+        unordered_map<int,int> mp;
         int l = 0, r = 0, maxLen = 0;
         while(r < n) {
             if(mp.count(nums[r])) {
