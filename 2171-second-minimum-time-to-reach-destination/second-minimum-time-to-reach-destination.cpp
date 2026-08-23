@@ -17,6 +17,8 @@ public:
             int dis = pq.top().first;
             pq.pop();
 
+            if(node == n-1 && dist[node][1] == dis) return dis;
+
             for(auto adjNode : adj[node]) {
                 int dd = dis + time;
                 int r = dis / change;
@@ -32,6 +34,6 @@ public:
             }
         }
 
-        return dist[n-1][1];
+        return -1;
     }
 };
