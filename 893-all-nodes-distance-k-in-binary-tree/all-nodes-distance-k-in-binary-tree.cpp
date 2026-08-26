@@ -9,21 +9,24 @@
  */
 class Solution {
 public:
-    void dfs(TreeNode* root, map<TreeNode*, TreeNode*>&parent) {
-        if(root==nullptr) return;
-        if(root->left != nullptr) parent[root->left] = root;
-        if(root->right != nullptr) parent[root->right] = root;
-        dfs(root->left, parent);
-        dfs(root->right, parent);
-    }
-
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        vector<int> ans;
         map<TreeNode*, TreeNode*> parent;
-        dfs(root, parent);
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()) {
+            TreeNode* node = q.front();
+            q.pop();
+            if(node->left != nullptr) {
+                parent[node->left] = node;
+                q.push(node->left);
+            }
+            if(node->right != nullptr) {
+                parent[node->right] = node;
+                q.push(node->right);
+            }
+        }
 
         map<TreeNode*, int> vis;
-        queue<TreeNode*> q;
         q.push(target);
         vis[target] = 1;
         for(int i=0;i<k;i++) {
@@ -31,10 +34,6 @@ public:
             for(int j=0;j<sz;j++) {
                 TreeNode* node = q.front();
                 q.pop();
-                if(parent[node] != nullptr && !vis.count(parent[node])) {
-                    vis[parent[node]] = 1;
-                    q.push(parent[node]);
-                }
                 if(node->left != nullptr && !vis.count(node->left)) {
                     vis[node->left] = 1;
                     q.push(node->left);
@@ -43,14 +42,19 @@ public:
                     vis[node->right] = 1;
                     q.push(node->right);
                 }
+                if(node != root && !vis.count(parent[node])) {
+                    vis[parent[node]] = 1;
+                    q.push(parent[node]);
+                }
             }
         }
 
+        vector<int> nodes;
         while(!q.empty()) {
-            ans.push_back(q.front()->val);
+            nodes.push_back(q.front()->val);
             q.pop();
         }
 
-        return ans;
+        return nodes;
     }
 };
