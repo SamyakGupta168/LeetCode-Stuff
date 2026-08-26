@@ -11,32 +11,26 @@
  */
 class Solution {
 public:
-    void dfs(TreeNode* root, int r, int c, map<int, map<pair<int,int>, int>>&mp, int &minCol, int &maxCol) {
+    void dfs(TreeNode* root, int r, int c, map<int, map<int, multiset<int>>>&mp) {
         if(root == nullptr) return;
-        mp[c][{r, root->val}]++;
-        minCol = min(minCol, c);
-        maxCol = max(maxCol, c);
-        dfs(root->left, r+1, c-1, mp, minCol, maxCol);
-        dfs(root->right, r+1, c+1, mp, minCol, maxCol);
+        mp[c][r].insert(root->val);
+        dfs(root->left, r+1, c-1, mp);
+        dfs(root->right, r+1, c+1, mp);
     }
 
     vector<vector<int>> verticalTraversal(TreeNode* root) {
         vector<vector<int>> ans;
         if(root == nullptr) return ans;
 
-        map<int, map<pair<int,int>, int>> mp;
-        int minCol = 0, maxCol = 0;
-        dfs(root, 0, 0, mp, minCol, maxCol);
-        ans.resize(maxCol - minCol + 1);
+        map<int, map<int, multiset<int>>> mp;
+        dfs(root, 0, 0, mp);
 
         for(auto &p : mp) {
-            int c = p.first;
-            for(auto &q : p.second) {
-                int r = q.first.first;
-                int val = q.first.second;
-                int cnt = q.second;
-                while(cnt--) ans[abs(minCol) + c].push_back(val);
+            vector<int> list;
+            for(auto &pp : p.second) {
+                for(auto node : pp.second) list.push_back(node);
             }
+            ans.push_back(list);
         }
 
         return ans;
