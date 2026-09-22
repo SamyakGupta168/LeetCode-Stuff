@@ -5,31 +5,44 @@ public:
 
     int shortestPath(vector<vector<int>>& grid, int k) {
         int n = grid.size(), m = grid[0].size();
-        vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
-        dist[0][0] = 0;
-        // {obs, {dist, node}}
-        priority_queue<pair<int, pair<int,pair<int,int>>>, vector<pair<int, pair<int,pair<int,int>>>>, greater<pair<int, pair<int,pair<int,int>>>>> pq;
+        vector<vector<vector<int>>> dist(n, vector<vector<int>>(m, vector<int>(k+1, INT_MAX)));
+        dist[0][0][0] = 0;
+        priority_queue<pair<int, pair<int, pair<int,int>>>, vector<pair<int, pair<int, pair<int,int>>>>, greater<pair<int, pair<int, pair<int,int>>>>> pq;
+        // {dist, {k, {row, column}}}
         pq.push({0, {0, {0, 0}}});
-        
+        int ans = INT_MAX;
         while(!pq.empty()) {
-            int obs = pq.top().first;
-            int dis = pq.top().second.first;
+            int dis = pq.top().first;
+            int obs = pq.top().second.first;
             int r = pq.top().second.second.first;
             int c = pq.top().second.second.second;
             pq.pop();
-            if(obs > k || (r == n-1 && c == m-1)) continue;
+            
+            if(obs > k) continue;
+            if(r == n-1 && c == m-1) {
+                ans = min(ans, dis);
+                continue;
+            }
+
             for(int i=0;i<4;i++) {
                 int nr = r + dx[i], nc = c + dy[i];
                 if(nr >= 0 && nc >= 0 && nr < n && nc < m) {
-                    if(dis + 1 < dist[nr][nc]) {
-                        dist[nr][nc] = dis + 1;
-                        if(grid[nr][nc]) pq.push({obs+1, {dist[nr][nc], {nr, nc}}});
-                        else pq.push({obs, {dist[nr][nc], {nr, nc}}});
+                    if(grid[nr][nc] == 1) {
+                        if(obs == k) continue;
+                        if(dis + 1 < dist[nr][nc][obs+1]) {
+                            dist[nr][nc][obs+1] = dis + 1;
+                            pq.push({dis+1, {obs+1, {nr, nc}}});
+                        }
+                    } else {
+                        if(dis + 1 < dist[nr][nc][obs]) {
+                            dist[nr][nc][obs] = dis + 1;
+                            pq.push({dis+1, {obs, {nr, nc}}});
+                        }
                     }
                 }
             }
         }
 
-        return (dist[n-1][m-1] != INT_MAX ? dist[n-1][m-1] : -1);
+        return (ans != INT_MAX ? ans : -1);
     }
 };
