@@ -1,52 +1,44 @@
 class Solution {
 public:
-    int topo(vector<vector<int>>&adj, vector<int>&pos, int n) {
-        vector<int> indegree(n+1);
-        for(auto &v : adj) {
-            for(auto x : v) indegree[x]++;
+    bool topo(int n, vector<vector<int>> order, vector<int>&res) {
+        vector<vector<int>> adj(n);
+        vector<int> indegree(n);
+        for(auto &e : order) {
+            int u = e[0] - 1, v = e[1] - 1;
+            adj[u].push_back(v);
+            indegree[v]++;
         }
 
         queue<int> q;
-        for(int i=1;i<=n;i++) {
+        for(int i=0;i<n;i++) {
             if(!indegree[i]) q.push(i);
         }
-
+        
         int idx = 0;
         while(!q.empty()) {
             int node = q.front();
-            pos[node] = idx;
-            idx++;
             q.pop();
-            for(auto it : adj[node]) {
-                indegree[it]--;
-                if(!indegree[it]) q.push(it);
+            res[node] = idx++;
+            for(auto adjNode : adj[node]) {
+                indegree[adjNode]--;
+                if(!indegree[adjNode]) {
+                    q.push(adjNode);
+                }
             }
         }
 
-        return idx;
+        return (idx == n);
     }
 
-    vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rowConditions, vector<vector<int>>& colConditions) {
-        vector<vector<int>> adj1(k+1), adj2(k+1);
-        for(auto &x : rowConditions) {
-            int u = x[0], v = x[1];
-            adj1[u].push_back(v);
-        }
+    vector<vector<int>> buildMatrix(int k, vector<vector<int>>& rc, vector<vector<int>>& cc) {
+        vector<int> row(k), col(k);
+        bool flag1 = topo(k, rc, row);
+        bool flag2 = topo(k, cc, col);
 
-        for(auto &x : colConditions) {
-            int u = x[0], v = x[1];
-            adj2[u].push_back(v);
-        }
+        if(!flag1 || !flag2) return vector<vector<int>>();
 
-        vector<int> row(k+1, -1), col(k+1, -1);
-        int cnt1 = topo(adj1, row, k);
-        int cnt2 = topo(adj2, col, k);
-
-        if(cnt1 != k || cnt2 != k) return vector<vector<int>> ();
-
-        vector<vector<int>> ans(k, vector<int>(k));
-        for(int i=1;i<=k;i++) ans[row[i]][col[i]] = i;
-
+        vector<vector<int>> ans(k, vector<int>(k, 0));
+        for(int i=0;i<k;i++) ans[row[i]][col[i]] = i+1;
         return ans;
     }
 };
