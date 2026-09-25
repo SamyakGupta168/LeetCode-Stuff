@@ -4,12 +4,12 @@ public:
     int longestArithSeqLength(vector<int>& nums) {
         int n = nums.size();
         vector<vector<int>> dp(n, vector<int>(1001, 1));
-        int ans = 2;
-        for(int i=0;i<n;i++) {
-            for(int j=i+1;j<n;j++) {
-                int diff = nums[j] - nums[i];
-                dp[j][diff+500] = max(dp[j][diff+500], 1 + dp[i][diff+500]);
-                ans = max(ans, dp[j][diff+500]);
+
+        int ans = 1;
+        for(int i=1;i<n;i++) {
+            for(int j=0;j<i;j++) {
+                dp[i][nums[i]-nums[j]+500] = max(dp[i][nums[i]-nums[j]+500], 1 + dp[j][nums[i]-nums[j]+500]);
+                ans = max(ans, dp[i][nums[i]-nums[j]+500]);
             }
         }
 
