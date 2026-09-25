@@ -8,32 +8,32 @@ public:
             adj[v].push_back(u);
         }
 
-        vector<vector<int>> dist(n, vector<int>(2, INT_MAX));
+        vector<vector<int>> dp(n, vector<int>(2, INT_MAX));
+        dp[0][0] = 0;
         priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
-        dist[0][0] = 0;
         pq.push({0, 0});
         while(!pq.empty()) {
+            int curTime = pq.top().first;
             int node = pq.top().second;
-            int dis = pq.top().first;
             pq.pop();
-
-            if(node == n-1 && dist[node][1] == dis) return dis;
-
             for(auto adjNode : adj[node]) {
-                int dd = dis + time;
-                int r = dis / change;
-                if(r & 1) dd += change - (dis % change);
-                if(dd < dist[adjNode][0]) {
-                    dist[adjNode][1] = dist[adjNode][0];
-                    dist[adjNode][0] = dd;
-                    pq.push({dd, adjNode});
-                } else if(dd < dist[adjNode][1] && dd > dist[adjNode][0]) {
-                    dist[adjNode][1] = dd;
-                    pq.push({dd, adjNode});
+                int wt = 0;
+                if((curTime/change) % 2 == 0) {
+                    wt = time;
+                } else {
+                    wt = (change - (curTime % change)) + time;
+                }  
+                if(curTime + wt < dp[adjNode][0]) {
+                    dp[adjNode][1] = dp[adjNode][0];
+                    dp[adjNode][0] = curTime + wt;
+                    pq.push({dp[adjNode][0], adjNode});
+                } else if(curTime + wt < dp[adjNode][1] && dp[adjNode][0] < curTime + wt) {
+                    dp[adjNode][1] = curTime + wt;
+                    pq.push({dp[adjNode][1], adjNode});
                 }
             }
         }
 
-        return -1;
+        return dp[n-1][1];
     }
 };
