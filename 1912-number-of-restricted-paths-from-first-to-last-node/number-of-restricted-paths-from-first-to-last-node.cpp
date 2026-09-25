@@ -1,57 +1,50 @@
 class Solution {
 public:
-    using ll = long long;
-    ll mod = 1e9 + 7;
+    int mod = 1e9 + 7;
 
-    void dijkstra(ll src, vector<vector<pair<ll,ll>>>&adj, vector<ll>&dist, ll n) {
-        priority_queue<pair<ll,ll>, vector<pair<ll,ll>>, greater<pair<ll,ll>>> pq;
-        pq.push({0, src});
-        dist[src] = 0;
+    int dfs(int node, vector<vector<pair<int,int>>>&adj, vector<int>&dp, vector<int>&dist) {
+        if(node == 0) return 1;
+        if(dp[node] != -1) return dp[node];
+        int cnt = 0;
+        dp[node] = 0;
+        for(auto &x : adj[node]) {
+            int adjNode = x.first;
+            if(dist[node] < dist[adjNode]) {
+                cnt += dfs(adjNode, adj, dp, dist);
+                cnt %= mod;
+            }
+        }
+        return dp[node] = cnt;
+    }
+
+    int countRestrictedPaths(int n, vector<vector<int>>& edges) {
+        vector<vector<pair<int,int>>> adj(n);
+        for(auto &e : edges) {
+            int u = e[0]-1, v = e[1]-1, wt = e[2];
+            adj[u].push_back({v, wt});
+            adj[v].push_back({u, wt});
+        }
+
+        vector<int> dist(n, INT_MAX);
+        dist[n-1] = 0;
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+        pq.push({0, n-1});
         while(!pq.empty()) {
-            ll node = pq.top().second;
-            ll dis = pq.top().first;
+            int dis = pq.top().first;
+            int node = pq.top().second;
             pq.pop();
-            for(auto &it : adj[node]) {
-                ll adjNode = it.first;
-                ll edw = it.second;
-                if(dis + edw < dist[adjNode]) {
-                    dist[adjNode] = dis + edw;
+            if(dis != dist[node]) continue;
+
+            for(auto &x : adj[node]) {
+                int adjNode = x.first, wt = x.second;
+                if(dis + wt < dist[adjNode]) {
+                    dist[adjNode] = dis + wt;
                     pq.push({dist[adjNode], adjNode});
                 }
             }
         }
-    }
 
-    int countRestrictedPaths(int n, vector<vector<int>>& edges) {
-        vector<vector<pair<ll,ll>>> adj(n);
-        for(auto &x : edges) {
-            ll u = x[0], v = x[1], w = x[2];
-            u--, v--;
-            adj[u].push_back({v, w});
-            adj[v].push_back({u, w});
-        }
-
-        vector<ll> dist(n, INT_MAX);
-        dijkstra(n-1, adj, dist, n);
-
-        vector<ll> nodes(n, 0);
-        iota(nodes.begin(), nodes.end(), 0LL);
-        sort(nodes.begin(), nodes.end(), [&] (auto u, auto v) ->bool {
-            return dist[u] < dist[v];
-        });
-
-        vector<ll> ways(n, 0); 
-        ways[n-1] = 1;
-        for(auto node : nodes) {
-            for(auto it : adj[node]) {
-                ll adjNode = it.first;
-                if(dist[node] < dist[adjNode]) {
-                    ways[adjNode] += ways[node];
-                    ways[adjNode] %= mod;
-                }
-            }
-        }
-
-        return (int)ways[0];
+        vector<int> dp(n, -1);
+        return dfs(n-1, adj, dp, dist);        
     }
 };
