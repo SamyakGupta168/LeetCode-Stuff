@@ -17,14 +17,15 @@ public:
 
         vector<vector<vector<int>>> dp((1<<6), vector<vector<int>>(n, vector<int>(m, INT_MAX)));
         // {dist, {k, {r, c}}}
-        priority_queue<pair<int,pair<int,pair<int,int>>>, vector<pair<int,pair<int,pair<int,int>>>>, greater<pair<int,pair<int,pair<int,int>>>>> pq;
+        // priority_queue<pair<int,pair<int,pair<int,int>>>, vector<pair<int,pair<int,pair<int,int>>>>, greater<pair<int,pair<int,pair<int,int>>>>> pq;
+        queue<pair<int,pair<int,pair<int,int>>>> pq;
         dp[0][sr][sc] = 0;
         pq.push({0, {0, {sr, sc}}});
         while(!pq.empty()) {
-            int dis = pq.top().first;
-            int kk = pq.top().second.first;
-            int r = pq.top().second.second.first;
-            int c = pq.top().second.second.second;
+            int dis = pq.front().first;
+            int kk = pq.front().second.first;
+            int r = pq.front().second.second.first;
+            int c = pq.front().second.second.second;
             pq.pop();
             if(dis != dp[kk][r][c]) continue;
 
