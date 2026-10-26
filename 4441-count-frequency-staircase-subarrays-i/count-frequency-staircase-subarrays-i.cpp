@@ -2,32 +2,25 @@ class Solution {
 public:
     int countStaircase(vector<int>& nums) {
         int n = nums.size();
-        int ans = 0;
-        unordered_map<int,int> good;
+        unordered_map<int,int> good, cnt;
         int len = 1;
         while(len*(len+1)/2 <= n) {
             good[len*(len+1)/2] = 1;
+            cnt[len*(len+1)/2] = len;
             len++;
         }
 
+        int ans = 0;
         for(int i=0;i<n;i++) {
-            unordered_map<int,int> mp;
-            vector<int> no;
+            unordered_map<int,int> rank, freq;
             for(int j=i;j<n;j++) {
-                if(!mp.count(nums[j])) no.push_back(nums[j]);
-                mp[nums[j]]++;
-                if(good.count(j-i+1)) {
-                    int freq = 1;
-                    bool flag = 1;
-                    for(auto x : no) {
-                        if(mp[x] != freq) {
-                            flag = 0;
-                            break;
-                        }
-                        freq++;
-                    }
-                    if(flag) ans++;
+                if(!rank.count(nums[j])) {
+                    int r = rank.size();
+                    rank[nums[j]] = r + 1;
                 }
+                freq[rank[nums[j]]]++;
+                if(rank[nums[j]] < freq[rank[nums[j]]]) break;
+                if(good.count(j-i+1) && cnt[j-i+1] == (int)rank.size()) ans++;
             }
         }
 
